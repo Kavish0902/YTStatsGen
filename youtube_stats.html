@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Stats</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            font-size: 3em;
+            text-align: center;
+        }
+        input, button {
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        async function fetchVideoStats() {
+            const videoUrl = document.getElementById('videoUrl').value;
+            const videoId = extractVideoId(videoUrl);
+            if (!videoId) {
+                alert('Please enter a valid YouTube URL.');
+                return;
+            }
+
+            try {
+                // Replace the API endpoint with the backend service to get video stats
+                const response = await fetch(`http://localhost:5000/stats?videoId=${videoId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch video stats');
+                }
+
+                const data = await response.json();
+                document.getElementById('output').innerText = 
+                    `Channel Title: ${data.channelTitle}\n` +
+                    `Subscriber Count: ${data.subCount}\n` +
+                    `View Count: ${data.viewCount}\n` +
+                    `Like Count: ${data.likeCount}`;
+            } catch (error) {
+                alert('Error fetching video stats: ' + error.message);
+            }
+        }
+
+        function extractVideoId(url) {
+            const match = url.match(/(?:https?:\/\/)?(?:www\.)?youtube\.com\/.*v=([^&]+)|youtu\.be\/([^&]+)|youtube\.com\/shorts\/([^&]+)/);
+            return match ? (match[1] || match[2] || match[3]) : null;
+        }
+    </script>
+</head>
+<body>
+    <h1>YouTube Video Stats Viewer</h1>
+    <input type="text" id="videoUrl" placeholder="Enter YouTube URL here">
+    <button onclick="fetchVideoStats()">Get Video Stats</button>
+    <pre id="output"></pre>
+</body>
+</html>
