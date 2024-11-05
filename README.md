@@ -26,9 +26,13 @@ Before setting up the project, make sure you have the following:
 
 3. Set up your YouTube Data API key:
 Go to the Google Cloud Console.
+
 Create a project (if you don't already have one).
+
 Go to APIs & Services > Credentials and click Create Credentials > API Key.
+
 Enable the YouTube Data API v3 for your project.
+
 Open youtube_api_server.py and replace API_KEY = 'REPLACE' with your actual API key.
 
 USAGE
